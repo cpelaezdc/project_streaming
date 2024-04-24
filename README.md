@@ -130,3 +130,68 @@ $ bin/kafka-console-consumer.sh --topic project_streaming --bootstrap-server {Pu
 
 ![alt text](images/Producer_ConsumerTest.png)
 
+
+## PYTHON CODE
+
+-  Open Jupyter framework
+-  Create a Python file kafka producer and kafkaconsumer.
+-  In kafka producer install kafka-python.
+
+```shell
+pip install kafka-python
+```
+
+-  In kafkaproducer install these libraries. 
+
+```python
+import pandas as pd
+from kafka import KafkaConsumer, KafkaProducer
+from time import sleep
+from json import dumps
+import json
+```
+
+-  Create de producer with the corresponding public IP
+
+```python
+producer = KafkaProducer(bootstrap_servers=['52.90.70.187:9092'],
+                         value_serializer=lambda x:
+                         dumps(x).encode('utf-8'))
+```
+
+-  Check by sending a text to the consumer,  first parameter the topic name.
+
+```python
+producer.send('project_streaming', value="{'hello':'world')")
+```
+
+-  in kafkaconsumer file import these libraries
+
+```python
+from kafka import KafkaConsumer
+from time import sleep
+from json import dumps,loads
+import json
+```
+
+-  Generate the consumer connection to the server
+
+```python
+consumer = KafkaConsumer(
+    'project_streaming',
+    bootstrap_servers=['52.90.70.187:9092'],
+                         value_deserializer=lambda x: loads(x.decode('utf-8')))
+```
+
+-  With this for loop test if consumer get data from producer
+
+```python
+for c in consumer:
+    print(c.value)
+```
+
+![alt text](images/ExecutionTestPythonProducerConsumer.png)
+
+
+
+
